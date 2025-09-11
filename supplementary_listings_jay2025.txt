@@ -1,0 +1,144 @@
+===============================================
+SUPPLEMENTARY CODE LISTINGS
+Paper Title: 
+Authors: Dr. Jay Nanavati, Dr. Sanskruti Patel, Dr. Unnati Patel
+Conference: 6th International Conference on Smart Electronics and Communication - ICOSEC 2025
+===============================================
+
+TABLE OF CONTENTS
+1. LISTING 1: Example JSON Serialization of Petclinic Multigraph Fragment
+2. LISTING 2: Example JSON Serialization of Multigraph
+3. LISTING 3: Example JSON Input for Louvain Modularity Optimization
+4. LISTING 4: Example JSON Output for Louvain Modularity Optimization
+5. LISTING 5: Example JSON Output of Spectral Clustering (k = 3)
+6. LISTING 6: Example Input Cluster for (from Louvain Modularity Optimization) Semantic Refinement
+7. LISTING 7: Example GPT-4 Refined Output Cluster
+8. LISTING 8: Example JSON Output of Louvain Clustering (partial Snippet)
+9. LISTING 9: Example JSON Output of Spectral Clustering (partial Snippet)
+
+======================================================================
+LISTING 1: Example JSON Serialization of Petclinic Multigraph Fragment
+======================================================================
+{
+  "nodes": ["OwnerController.addOwner", "OwnerRepository.save",
+            "Owner", "Person", "OwnerRepository", "JpaRepository"],
+  "edges": [
+    ["OwnerController.addOwner", "OwnerRepository.save", "CALLS"],
+    ["Owner", "Person", "EXTENDS"],
+    ["OwnerRepository", "JpaRepository", "IMPLEMENTS"],
+    ["Start", "ValidateOwner", "FLOWS_TO"],
+    ["ValidateOwner", "SaveOwner", "FLOWS_TO"],
+    ["SaveOwner", "Redirect", "FLOWS_TO"]
+  ]
+}
+
+
+===================================================
+LISTING 2: Example JSON Serialization of Multigraph
+===================================================
+{
+  "nodes": [
+    {"id": "OwnerController", "type": "class"},
+    {"id": "OwnerRepository", "type": "interface"}
+  ],
+  "edges": [
+    {"source": "OwnerController", "target": "OwnerRepository", "relationType": "CALLS"}
+  ]
+}
+
+==================================================================
+LISTING 3: Example JSON Input for Louvain Modularity Optimization
+==================================================================
+{
+  "nodes": [
+    {"id": "OwnerController", "type": "class"},
+    {"id": "OwnerRepository", "type": "class"},
+    {"id": "PetController", "type": "class"},
+    {"id": "PetRepository", "type": "class"},
+    {"id": "VisitController", "type": "class"},
+    {"id": "VisitRepository", "type": "class"}
+  ],
+  "edges": [
+    {"source": "OwnerController", "target": "OwnerRepository", "weight": 0.91},
+    {"source": "PetController", "target": "PetRepository", "weight": 0.93},
+    {"source": "VisitController", "target": "VisitRepository", "weight": 0.92},
+
+    {"source": "OwnerController", "target": "PetController", "weight": 0.20},
+    {"source": "PetController", "target": "VisitController", "weight": 0.18},
+    {"source": "VisitRepository", "target": "OwnerRepository", "weight": 0.22}
+  ]
+}
+==================================================================
+LISTING 4: Example JSON Output for Louvain Modularity Optimization
+==================================================================
+{
+  "clusters": {
+    "0": ["OwnerController", "OwnerRepository"],
+    "1": ["PetController", "PetRepository"],
+    "2": ["VisitController", "VisitRepository"]
+  },
+  "modularity_score": 0.67
+}
+=============================================================
+LISTING 5: Example JSON Output of Spectral Clustering (k = 3)
+=============================================================
+{
+  "clusters": {
+    "0": ["OwnerController", "OwnerRepository"],
+    "1": ["PetController", "PetRepository"],
+    "2": ["VisitController", "VisitRepository"]
+  },
+  "method": "SpectralClustering",
+  "k": 3,
+  "notes": "Affinity = weighted adjacency (precomputed). Labels assigned by clustering on eigenvectors of graph Laplacian."
+}
+===============================================================================================
+LISTING 6: Example Input Cluster for (from Louvain Modularity Optimization) Semantic Refinement
+===============================================================================================
+{
+  "cluster_id": 1,
+  "classes": [
+    "OwnerController",
+    "OwnerRepository",
+    "PetController"
+  ],
+  "comments": {
+    "OwnerController": "Handles HTTP requests related to owners",
+    "OwnerRepository": "JPA repository interface for Owner entity",
+    "PetController": "Handles HTTP requests related to pets"
+  },
+  "relations": [
+    ["OwnerController", "OwnerRepository", "CALLS"],
+    ["OwnerController", "PetController", "CALLS"]
+  ]
+}
+===============================================
+LISTING 7: Example GPT-4 Refined Output Cluster
+===============================================
+{
+  "clusters": {
+    "OwnerService": ["OwnerController", "OwnerRepository"],
+    "PetService": ["PetController"]
+  },
+  "notes": "PetController was reassigned to a separate service, as it semantically corresponds to the Pet domain and is unrelated to Owner persistence logic."
+}
+======================================================================
+LISTING 8: Example JSON Output of Louvain Clustering (partial Snippet)
+======================================================================
+{
+  "Cluster_0": ["OwnerController", "OwnerRepository", "Owner"],
+  "Cluster_1": ["PetController", "PetRepository", "Pet"],
+  ...
+}
+======================================================================
+LISTING 9: Example JSON Output of Spectral Clustering (partial Snippet)
+======================================================================
+{
+  "Cluster_0": ["OwnerController", "OwnerRepository", "Owner"],
+  "Cluster_1": ["PetController", "PetRepository", "Pet"],
+  "Cluster_2": ["VisitController", "VisitRepository", "Visit"],
+  "Cluster_3": ["VetController", "VetRepository", "Specialty"]
+}
+
+
+
